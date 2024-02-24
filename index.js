@@ -3,7 +3,7 @@ const app = express();
 
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
-
+app.use(express.json());
 
 const path = require("path");
 
@@ -30,11 +30,30 @@ const initializeDBAndServer = async () => {
 initializeDBAndServer();
 
 app.get("/", (req, res) => {
-  res.status(200).send("Langing Page");
+  res.status(200).send("Courier Tracking Application");
 });
 
 app.get("/about", (req, res) => {
   res.status(200).send("About Page");
 });
 
+app.get("/getCourier/:courierID", async (request, response) => {
+  const { courierID } = request.params;
+  const query = `
+   SELECT 
+        *
+    FROM 
+       couriers
+    WHERE 
+        courier_id = ${courierID};
+       `;
+  const obj = await db.get(query);
+  if (obj === undefined) {
+    response.status(400);
+    response.send({});
+  }
+  else {
+    response.send(obj);
+  }
+});
 
