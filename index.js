@@ -93,7 +93,7 @@ app.post("/login/", async (request, response) => {
 
   if (dbUser === undefined) {
     response.status(400);
-    response.send(JSON.stringify({ errorMsg: "Username or password is invalid" }));
+    response.send({ errorMsg: "Username or password is invalid" });
   } else {
     const isPasswordMatched = await bcrypt.compare(
       password,
@@ -102,10 +102,10 @@ app.post("/login/", async (request, response) => {
     if (isPasswordMatched) {
       const payload = { username: username };
       const jwtToken = jwt.sign(payload, "MY_SECRET_TOKEN");
-      response.send(JSON.stringify({ jwtToken }));
+      response.send({ jwtToken });
     } else {
       response.status(400);
-      response.send(JSON.stringify({ errorMsg: "username and password didn't match" }));
+      response.send({ errorMsg: "username and password didn't match" });
     }
   }
 });
@@ -155,7 +155,7 @@ app.post("/addCourier", async (request, response) => {
   `;
 
   await db.run(updateCourierQuery);
-  response.send(JSON.stringify({ message: "Courier Successfully Added" }));
+  response.send({ message: "Courier Successfully Added" });
 });
 
 app.post("/addShipment", async (request, response) => {
@@ -172,7 +172,7 @@ app.post("/addShipment", async (request, response) => {
     );
   `;
   await db.run(updateCourierQuery);
-  response.send(JSON.stringify({ message: "Shipment Added Successfully" }));
+  response.send({ message: "Shipment Added Successfully" });
 });
 
 app.put("/updateShipment", async (request, response) => {
@@ -186,7 +186,7 @@ app.put("/updateShipment", async (request, response) => {
     tracking_id = ${shipmentID};
   `;
   await db.run(updateCourierQuery);
-  response.send(JSON.stringify({ message: "Shipment Updated Successfully" }));
+  response.send({ message: "Shipment Updated Successfully" });
 });
 
 app.delete("/deleteShipment/:shipmentID", async (request, response) => {
@@ -197,7 +197,7 @@ app.delete("/deleteShipment/:shipmentID", async (request, response) => {
     tracking_id = ${shipmentID};
   `;
   await db.run(deleteCourierQuery);
-  response.send(JSON.stringify({ message: "Shipment Deleted Successfully" }));
+  response.send({ message: "Shipment Deleted Successfully" });
 });
 
 const formatData = (data) => {
@@ -224,9 +224,21 @@ app.get("/getTrackingData/:courierID", async (request, response) => {
   if (trackingData.length === 0) {
     response.status(400);
   } else {
-    response.status(200).send(JSON.stringify(trackingData));
+    response.send(trackingData.map((data) => formatData(data)));
   }
 });
+
+
+const formatCourierData (data) => {
+  return {
+    courierID: data.courier_id,
+    courierName: data.courier_name,
+    fromAddress: data.from_address,
+    toAddress: data.to_address,
+    timestamp: data.timestamp,
+    isDelivered: data.is_delivered,
+  };
+}
 
 app.get("/getCourier/:courierID", async (request, response) => {
   const { courierID } = request.params;
@@ -238,12 +250,12 @@ app.get("/getCourier/:courierID", async (request, response) => {
     WHERE 
         courier_id = ${courierID};
        `;
-  const obj = await db.get(query);
+  const courierInfo = await db.get(query);
   if (obj === undefined) {
     response.status(400);
   }
   else {
-    response.status(200).send(JSON.stringify(obj));
+    response.send(formatCourierData(courierInfo));
   }
 });
 
