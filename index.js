@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { format } = require("date-fns");
+
 
 app.use(cors());
 
@@ -41,7 +41,7 @@ const initializeDBAndServer = async () => {
 initializeDBAndServer();
 
 app.get("/", (req, res) => {
-  res.status(200).send( "Courier Tracking Application");
+  res.status(200).send("Courier Tracking Application");
 });
 
 
@@ -121,7 +121,6 @@ const authenticateToken = (request, response, next) => {
 };
 
 app.post("/addCourier", async (request, response) => {
-  const date = format(new Date(), "MM/dd/yyyy");
   const {
     courierId,
     courierName,
@@ -212,7 +211,7 @@ app.get("/getTrackingData/:courierID", async (request, response) => {
   const trackingData = await db.all(query);
   if (trackingData.length === 0) {
     response.status(400);
-    response.send("Tracking Data Not Found");
+    response.send({message: "Tracking Data Not Found"});
   } else {
     response.send(trackingData.map((data) => formatData(data)));
   }
@@ -243,7 +242,7 @@ app.get("/getCourier/:courierID", async (request, response) => {
   const courierInfo = await db.get(query);
   if (courierInfo === undefined) {
     response.status(400);
-    response.send("Courier Not Found");
+    response.send({message:"Courier Not Found"});
   }
   else {
     response.send(formatCourierData(courierInfo));
