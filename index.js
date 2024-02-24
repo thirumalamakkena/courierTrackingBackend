@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { format } = require("date-fns");
+
+app.use(cors());
 
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
