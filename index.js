@@ -71,7 +71,7 @@ app.get("/contact", (req, res) => {
 });
 
 app.get("/address", (req, res) => {
-  res.status(200).send("About Page");
+  res.status(200).send([{errMsg:"contatct Page"},{errMsg:"About-Page"}]);
 });
 
 app.post("/users/", async (request, response) => {
@@ -242,7 +242,7 @@ app.get("/getTrackingData/:courierID", async (request, response) => {
   if (trackingData.length === 0) {
     response.status(400);
   } else {
-    response.status(200).send(JSON.stringify(trackingData.map((data) => formatData(data))));
+    response.status(200).send(JSON.stringify(trackingData));
   }
 });
 
