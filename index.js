@@ -251,7 +251,7 @@ app.get("/getCourier/:courierID", async (request, response) => {
         courier_id = ${courierID};
        `;
   const courierInfo = await db.get(query);
-  if (obj === undefined) {
+  if (courierInfo === undefined) {
     response.status(400);
   }
   else {
