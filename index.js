@@ -41,20 +41,9 @@ const initializeDBAndServer = async () => {
 initializeDBAndServer();
 
 app.get("/", (req, res) => {
-  res.status(200).send({msg: "Courier Tracking Application"});
+  res.status(200).send( "Courier Tracking Application");
 });
 
-app.get("/about", (req, res) => {
-  res.status(200).send(JSON.stringify({msg:"About Page"}));
-});
-
-app.get("/contact", (req, res) => {
-  res.status(200).send(JSON.stringify([{msg:"contatct Page"},{msg:"About-Page"}]));
-});
-
-app.get("/address", (req, res) => {
-  res.status(200).send([{errMsg:"contatct Page"},{errMsg:"About-Page"}]);
-});
 
 app.post("/users/", async (request, response) => {
   const { username, name, password, gender, location } = request.body;
@@ -223,6 +212,7 @@ app.get("/getTrackingData/:courierID", async (request, response) => {
   const trackingData = await db.all(query);
   if (trackingData.length === 0) {
     response.status(400);
+    response.send("Tracking Data Not Found");
   } else {
     response.send(trackingData.map((data) => formatData(data)));
   }
@@ -253,6 +243,7 @@ app.get("/getCourier/:courierID", async (request, response) => {
   const courierInfo = await db.get(query);
   if (courierInfo === undefined) {
     response.status(400);
+    response.send("Courier Not Found");
   }
   else {
     response.send(formatCourierData(courierInfo));
