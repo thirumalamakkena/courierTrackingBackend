@@ -255,7 +255,7 @@ app.get("/getCourier/:courierID", async (request, response) => {
     response.send({});
   }
   else {
-    response.json(obj);
+    response.send(JSON.stringify(obj));
   }
 });
 
