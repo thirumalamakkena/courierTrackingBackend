@@ -59,10 +59,18 @@ const initializeDBAndServer = async () => {
 initializeDBAndServer();
 
 app.get("/", (req, res) => {
-  res.status(200).send("Courier Tracking Application");
+  res.status(200).send({msg: "Courier Tracking Application"});
 });
 
 app.get("/about", (req, res) => {
+  res.status(200).send(JSON.stringify({msg:"About Page"}));
+});
+
+app.get("/contact", (req, res) => {
+  res.status(200).send(JSON.stringify([{msg:"contatct Page"},{msg:"About-Page"}]));
+});
+
+app.get("/address", (req, res) => {
   res.status(200).send("About Page");
 });
 
