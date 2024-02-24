@@ -242,7 +242,7 @@ app.get("/getTrackingData/:courierID", async (request, response) => {
   if (trackingData.length === 0) {
     response.status(400);
   } else {
-    response.send(JSON.stringify(trackingData.map((data) => formatData(data))));
+    response.status(200).send(JSON.stringify(trackingData.map((data) => formatData(data))));
   }
 });
 
@@ -261,7 +261,7 @@ app.get("/getCourier/:courierID", async (request, response) => {
     response.status(400);
   }
   else {
-    response.send(JSON.stringify(obj));
+    response.status(200).send(JSON.stringify(obj));
   }
 });
 
