@@ -229,7 +229,7 @@ app.get("/getTrackingData/:courierID", async (request, response) => {
 });
 
 
-const formatCourierData (data) => {
+const formatCourierData = (data) => {
   return {
     courierID: data.courier_id,
     courierName: data.courier_name,
