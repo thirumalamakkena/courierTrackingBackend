@@ -122,7 +122,7 @@ const authenticateToken = (request, response, next) => {
 
 app.post("/addCourier", async (request, response) => {
   const {
-    courierId,
+    courierID,
     courierName,
     fromAddress,
     toAddress,
@@ -133,7 +133,7 @@ app.post("/addCourier", async (request, response) => {
     INSERT INTO couriers 
     VALUES
     (
-        ${courierId},
+        ${courierID},
         '${courierName}',
         '${fromAddress}',
        '${toAddress}',
@@ -250,5 +250,17 @@ app.get("/getCourier/:courierID", async (request, response) => {
 });
 
 
+app.get("/getCouriers", async (request, response) => {
+  const { courierID } = request.params;
+  const query = `
+   SELECT 
+        *
+    FROM 
+       couriers;
+    
+       `;
+  const courierInfo = await db.all(query);
+    response.send(courierInfo);
+});
 
 
